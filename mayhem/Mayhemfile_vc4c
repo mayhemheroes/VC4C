@@ -1,0 +1,22 @@
+# VC4C `vc4c` file-input target — preserved for parity with the original integration.
+#
+# Mayhem delivers each test input as a FILE (@@).  We point this at a thin, additive
+# harness (mayhem/vc4c_target.cpp -> /mayhem/vc4c_target) rather than the public vc4c
+# CLI binary: the CLI (src/main.cpp) calls Compiler::compile with NO try/catch, so any
+# empty / malformed / non-SPIR-V input (incl. Mayhem's baseline empty testcase, or any
+# mutation that corrupts the SPIR-V magic -> "Pre-compilation: Unhandled pre-compilation")
+# escapes main() as an uncaught CompilationError -> std::terminate() -> SIGABRT. Mayhem
+# recorded that as an "Uncaught Exception" CRITICAL error on the baseline and aborted the
+# run at edges=0. src/main.cpp is upstream source we keep additively unmodified.
+#
+# The harness reads the file, forces VC4C's BUILT-IN SPIR-V front-end (Frontend::SPIR_V,
+# no external clang/llvm-spirv) and runs the full instrumented pipeline
+# (SPIRVLexer -> normalize -> optimize -> adjust -> codegen), catching CompilationError/
+# std::exception so bad input exits cleanly. Genuine memory-safety bugs still trap via ASan.
+# It compiles in-memory (no output file) so there is no non-writable-path concern.
+project: VC4C
+
+target: vc4c
+
+cmds:
+  - cmd: /mayhem/vc4c_target @@

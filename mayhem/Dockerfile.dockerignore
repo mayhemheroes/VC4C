@@ -1,0 +1,15 @@
+# .dockerignore for the commit-image build (BuildKit reads <dockerfile>.dockerignore).
+# Bake in the FULL repo — including .git (the grader uses it). Only drop local build
+# artifacts / editor+OS cruft so a dirty working tree cannot leak into the context.
+# A clean CI checkout has none of these; this just keeps local runs reproducible.
+build/
+build-test/
+out/
+*.o
+*.a
+*.so
+*.dylib
+**/__pycache__/
+.DS_Store
+*.swp
+*~
