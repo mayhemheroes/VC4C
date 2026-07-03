@@ -1,0 +1,12 @@
+# Namespaced project name
+project: VC4C
+
+# Target name
+target: fuzz-spirv
+
+# libFuzzer harness: Mayhem drives the embedded libFuzzer engine natively.
+# Using libfuzzer: true (not @@ file-input) so Mayhem's coverage collection
+# is aligned with the binary's -fsanitize=fuzzer SanitizerCoverage model.
+cmds:
+  - cmd: /mayhem/fuzz_spirv
+    libfuzzer: true

@@ -1,0 +1,10 @@
+# VC4C CLI file-input target — preserved from the original integration for parity.
+# The vc4c binary is the public-facing compiler frontend: it auto-detects the
+# input format (OpenCL C, LLVM IR, SPIR-V, QPU hex) and runs the full pipeline.
+project: VC4C
+
+target: vc4c
+
+cmds:
+  - cmd: /mayhem/build/src/vc4c @@
+    filepath: /tmp/input.spv
